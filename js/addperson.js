@@ -1,63 +1,80 @@
 /*global webcourses _config*/
-
 var webcourses = window.webcourses || {};
-webcourses.map = webcourses.map || {};
 (function rideScopeWrapper($) {
     var authToken;
     webcourses.authToken.then(function setAuthToken(token) {
         if (token) {
             authToken = token;
+            alert(authToken);
         } else {
             window.location.href = 'signin.html';
         }
     }).catch(function handleTokenError(error) {
-        alert(error);
         window.location.href = 'signin.html';
     });
-    function AddPerson() {
+    function AddPerson(name, family_name) {
         $.ajax({
             method: 'POST',
-            url: _config.api.invokeUrl + '/people',
+            url: 'https://ee9gel1fi5.execute-api.us-east-2.amazonaws.com/prod/addperson',
             headers: {
                 Authorization: authToken
             },
             data: JSON.stringify({
-                Amount: Math.random()
+                name: name,
+                family_name: family_name,
+                amount: 0
             }),
+            //dataType: 'text',
             contentType: 'application/json',
             success: completeRequest,
             error: function ajaxError(jqXHR, textStatus, errorThrown) {
                 console.error('Error requesting ride: ', textStatus, ', Details: ', errorThrown);
                 console.error('Response: ', jqXHR.responseText);
-                alert('An error occured when requesting your unicorn:\n' + jqXHR.responseText);
+                alert('An error occured when adding new person:\n' + jqXHR.responseText);
             }
         });
     }
 
+    /*function AddPerson(name, family_name) {
+        var xhr = new XMLHttpRequest();
+        var url = _config.api.invokeUrl + '/addperson';
+        //alert(url);
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Authorization", authToken);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        var data = JSON.stringify({"name": name, "family_name": family_name, amount: 0});
+        xhr.send(data);
+        //alert(data);
+        //alert(xhr.header);
+        //alert(xhr.data);
+        if (xhr.status !== 200) {
+            alert("wut");
+            alert( xhr.status + ': ' + xhr.statusText ); // пример вывода: 404: Not Found
+        } else {
+            // вывести результат
+            alert( xhr.responseText ); // responseText -- текст ответа.
+        }
+    }*/
+
     function completeRequest(result) {
-        var unicorn;
-        var pronoun;
-        console.log('Response received from API: ', result);
-        unicorn = result.Unicorn;
-        pronoun = unicorn.Gender === 'Male' ? 'his' : 'her';
-        displayUpdate(unicorn.Name + ', your ' + unicorn.Color + ' unicorn, is on ' + pronoun + ' way.');
-        animateArrival(function animateCallback() {
-            displayUpdate(unicorn.Name + ' has arrived. Giddy up!');
-            webcourses.map.unsetLocation();
-            $('#request').prop('disabled', 'disabled');
-            $('#request').text('Set Pickup');
-        });
+        window.location.href = 'people.html';
+    }
+
+    function handleAddPerson(event) {
+        var name = $('#nameInputRegister').val();
+        var family_name = $('#familyNameInputRegister').val();
+        event.preventDefault();
+        AddPerson(name, family_name);
     }
 
     // Register click handler for #request button
     $(function onDocReady() {
-        $('#request').click(handleRequestClick);
+        $('#addPersonForm').submit(handleAddPerson);
         $('#signOut').click(function() {
             webcourses.signOut();
             alert("You have been signed out.");
             window.location = "signin.html";
         });
-        $(webcourses.map).on('pickupChange', handlePickupChanged);
 
         webcourses.authToken.then(function updateAuthMessage(token) {
             if (token) {
@@ -70,18 +87,6 @@ webcourses.map = webcourses.map || {};
             $('#noApiMessage').show();
         }
     });
-
-    function handlePickupChanged() {
-        var requestButton = $('#request');
-        requestButton.text('Request Unicorn');
-        requestButton.prop('disabled', false);
-    }
-
-    function handleRequestClick(event) {
-        var pickupLocation = webcourses.map.selectedPoint;
-        event.preventDefault();
-        requestUnicorn(pickupLocation);
-    }
 
     function displayUpdate(text) {
         $('#updates').append($('<li>' + text + '</li>'));

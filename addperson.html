@@ -6,7 +6,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Регистрация</title>
+    <title>Добавить нового</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
 </head>
@@ -64,11 +64,26 @@
         </form>
     </section>
 </div>
+<div id="noApiMessage" class="configMessage" style="display: none;">
+    <div class="backdrop"></div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Successfully Authenticated!</h3>
+        </div>
+        <div class="panel-body">
+            <p>This page is not functional yet because there is no API invoke URL configured in <a href="/js/config.js">/js/config.js</a>. You'll configure this in Module 3.</p>
+            <p>In the meantime, if you'd like to test the Amazon Cognito user pool authorizer for your API, use the auth token below:</p>
+            <textarea class="authToken"></textarea>
+        </div>
+    </div>
+</div>
+<textarea class="authToken"></textarea>
 <script src="js/vendor/jquery-3.1.0.js"></script>
 <script src="js/vendor/bootstrap.min.js"></script>
 <script src="js/vendor/aws-cognito-sdk.min.js"></script>
 <script src="js/vendor/amazon-cognito-identity.min.js"></script>
 <script src="js/config.js"></script>
 <script src="js/cognito-auth.js"></script>
+<script src="js/addperson.js"></script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 var webcourses = window.webcourses || {};
 
 (function scopeWrapper($) {
-    var signinUrl = '/signin.html';
+    var signinUrl = 'signin.html';
 
     var poolData = {
         UserPoolId: _config.cognito.userPoolId,
@@ -34,11 +34,13 @@ var webcourses = window.webcourses || {};
 
         if (cognitoUser) {
             cognitoUser.getSession(function sessionCallback(err, session) {
+
                 if (err) {
                     reject(err);
                 } else if (!session.isValid()) {
                     resolve(null);
                 } else {
+
                     resolve(session.getIdToken().getJwtToken());
                 }
             });
@@ -52,14 +54,34 @@ var webcourses = window.webcourses || {};
      * Cognito User Pool functions
      */
 
-    function register(email, password, onSuccess, onFailure) {
+    function register(username, email, name, family_name, password, onSuccess, onFailure) {
+        var dataUsername = {
+            Name: 'preferred_username',
+            Value: username
+        };
+
+        var dataName = {
+            Name: 'name',
+            Value: name
+        };
+
+        var dataFamilyName = {
+            Name: 'family_name',
+            Value: family_name
+        };
+
         var dataEmail = {
             Name: 'email',
             Value: email
         };
-        var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail);
 
-        userPool.signUp(email, password, [attributeEmail], null,
+        var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail);
+        var attributeUsername = new AmazonCognitoIdentity.CognitoUserAttribute(dataUsername);
+        var attributeName = new AmazonCognitoIdentity.CognitoUserAttribute(dataName);
+        var attributeFamilyName = new AmazonCognitoIdentity.CognitoUserAttribute(dataFamilyName);
+        var attributeList = [attributeEmail, attributeUsername, attributeName, attributeFamilyName];
+
+        userPool.signUp(email, password, attributeList, null,
             function signUpCallback(err, result) {
                 if (!err) {
                     onSuccess(result);
@@ -126,7 +148,10 @@ var webcourses = window.webcourses || {};
     }
 
     function handleRegister(event) {
+        var username = $('#usernameInputRegister').val();
         var email = $('#emailInputRegister').val();
+        var name = $('#nameInputRegister').val();
+        var family_name = $('#familyNameInputRegister').val();
         var password = $('#passwordInputRegister').val();
         var password2 = $('#password2InputRegister').val();
         var onSuccess = function registerSuccess(result) {
@@ -143,7 +168,7 @@ var webcourses = window.webcourses || {};
         event.preventDefault();
 
         if (password === password2) {
-            register(email, password, onSuccess, onFailure);
+            register(username, email, name, family_name, password, onSuccess, onFailure);
         } else {
             alert('Passwords do not match');
         }
