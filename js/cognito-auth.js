@@ -2,7 +2,7 @@
 
 var webcourses = window.webcourses || {};
 
-(function scopeWrapper($) {
+(function webcoursesscopeWrapper($) {
     var signinUrl = 'signin.html';
 
     var poolData = {
@@ -34,21 +34,24 @@ var webcourses = window.webcourses || {};
 
         if (cognitoUser) {
             cognitoUser.getSession(function sessionCallback(err, session) {
-
                 if (err) {
                     reject(err);
                 } else if (!session.isValid()) {
                     resolve(null);
                 } else {
-
                     resolve(session.getIdToken().getJwtToken());
+                    $('#displayUser').show();
+                    //alert(document.getElementById("displayUser").innerText);
+                    //document.getElementById("displayUser").textContent = " " + cognitoUser.getUsername();
+                    $('#displaySignOut').show();
+                    $('#disableSignIn').hide();
+                    $('#disableSignUp').hide();
                 }
             });
         } else {
             resolve(null);
         }
     });
-
 
     /*
      * Cognito User Pool functions
@@ -130,6 +133,11 @@ var webcourses = window.webcourses || {};
         $('#signinForm').submit(handleSignin);
         $('#registrationForm').submit(handleRegister);
         $('#verifyForm').submit(handleVerify);
+        $('#signOut').click(function() {
+            webcourses.signOut();
+            alert("You have been signed out.");
+            window.location = "signin.html";
+        });
     });
 
     function handleSignin(event) {

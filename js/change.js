@@ -1,5 +1,9 @@
-/*global webcourses _config*/
+var url = new URL(window.location.href);
+var person = url.searchParams.get("Person");
+var amount = Number(url.searchParams.get("Amount"));
 var webcourses = window.webcourses || {};
+
+document.getElementById("personname").innerHTML = person;
 (function webcoursesScopeWrapper($) {
     var authToken;
     webcourses.authToken.then(function setAuthToken(token) {
@@ -11,14 +15,17 @@ var webcourses = window.webcourses || {};
     }).catch(function handleTokenError(error) {
         window.location.href = 'signin.html';
     });
-    function GetPerson() {
+    function ChangePersonAmount(newamount) {
         $.ajax({
             method: 'POST',
-            url: _config.api.invokeUrl + '/people',
+            url: _config.api.invokeUrl + '/addperson',
             headers: {
                 Authorization: authToken
             },
             data: JSON.stringify({
+                name: person,
+                family_name: "",
+                amount: newamount,
             }),
             //dataType: 'text',
             contentType: 'application/json',
@@ -32,24 +39,33 @@ var webcourses = window.webcourses || {};
     }
 
     function completeRequest(result) {
-        var text = "";
-        var i = 0;
-        var phrase = '';
-        result.forEach(function(element, index, array) {
-            if (Number(element.Amount) > 0) {
-                phrase = " должен мне "
-            } else {
-                phrase = " я должен "
-            }
-            text += "<div id='id" + i + "'><a href='change.html?Person=" + element.Person + '&Amount=' + element.Amount + "'>" + element.Person  + "</a>:" + phrase + Math.abs(element.Amount) + "</div>";
-            i += 1;
-        });
-        text += "";
-        document.getElementById("target").innerHTML = text;
+        console.log(result);
+        window.location.href = 'people.html';
+    }
+    //+ должны мне. - должен я
+    function HandleChangePersonAmount(event) {
+        var amountdiff = $('#amountInput').val();
+        var choice = document.querySelector('input[name="Choice"]:checked').id;
+        switch (choice) {
+            case "Choice1": //я занял
+                amount -= Number(amountdiff);
+                break;
+            case "Choice2": //у меня заняли
+                amount += Number(amountdiff);
+                break;
+            case "Choice3": //я вернул
+                amount += Number(amountdiff);
+                break;
+            case "Choice4": //мне вернули
+                amount -= Number(amountdiff);
+                break;
+        }
+        event.preventDefault();
+        ChangePersonAmount(amount);
     }
 
     $(function onDocReady() {
-        GetPerson();
+        $('#actionForm').submit(HandleChangePersonAmount);
         $('#signOut').click(function() {
             webcourses.signOut();
             alert("You have been signed out.");

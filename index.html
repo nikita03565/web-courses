@@ -19,8 +19,10 @@
       <li><a href="people.html">Люди</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
-      <li><a href="register.html"><span class="glyphicon glyphicon-user"></span> Зарегистрироваться</a></li>
-      <li><a href="signin.html"><span class="glyphicon glyphicon-log-in"></span> Войти</a></li>
+       <li id="disableSignUp"><a href="register.html"><span class="glyphicon glyphicon-user"></span> Зарегистрироваться</a></li>
+       <li id="displayUser" style="display: none;"><a href=""><span  class="glyphicon glyphicon-user"></span> Вы в системе</a></li>
+       <li id="disableSignIn"><a href="signin.html"><span class="glyphicon glyphicon-log-in"></span> Войти</a></li>
+       <li id="displaySignOut" style="display: none;"><a href="" id = "signOut"><span class="glyphicon glyphicon-log-out" ></span> Выйти</a></li>
     </ul>
   </div>
 </nav>

@@ -1,11 +1,10 @@
 /*global webcourses _config*/
 var webcourses = window.webcourses || {};
-(function rideScopeWrapper($) {
+(function webcoursesScopeWrapper($) {
     var authToken;
     webcourses.authToken.then(function setAuthToken(token) {
         if (token) {
             authToken = token;
-            alert(authToken);
         } else {
             window.location.href = 'signin.html';
         }
@@ -15,7 +14,7 @@ var webcourses = window.webcourses || {};
     function AddPerson(name, family_name) {
         $.ajax({
             method: 'POST',
-            url: 'https://ee9gel1fi5.execute-api.us-east-2.amazonaws.com/prod/addperson',
+            url: _config.api.invokeUrl + '/addperson',
             headers: {
                 Authorization: authToken
             },
@@ -34,27 +33,6 @@ var webcourses = window.webcourses || {};
             }
         });
     }
-
-    /*function AddPerson(name, family_name) {
-        var xhr = new XMLHttpRequest();
-        var url = _config.api.invokeUrl + '/addperson';
-        //alert(url);
-        xhr.open("POST", url, true);
-        xhr.setRequestHeader("Authorization", authToken);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        var data = JSON.stringify({"name": name, "family_name": family_name, amount: 0});
-        xhr.send(data);
-        //alert(data);
-        //alert(xhr.header);
-        //alert(xhr.data);
-        if (xhr.status !== 200) {
-            alert("wut");
-            alert( xhr.status + ': ' + xhr.statusText ); // пример вывода: 404: Not Found
-        } else {
-            // вывести результат
-            alert( xhr.responseText ); // responseText -- текст ответа.
-        }
-    }*/
 
     function completeRequest(result) {
         window.location.href = 'people.html';

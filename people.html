@@ -19,18 +19,23 @@
             <li><a href="people.html">Люди</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li><a href="register.html"><span class="glyphicon glyphicon-user"></span> Зарегистрироваться</a></li>
-            <li><a href="signin.html"><span class="glyphicon glyphicon-log-in"></span> Войти</a></li>
+            <li id="disableSignUp"><a href="register.html"><span class="glyphicon glyphicon-user"></span> Зарегистрироваться</a></li>
+            <li id="displayUser" style="display: none;"><a href=""><span  class="glyphicon glyphicon-user"></span> Вы в системе</a></li>
+            <li id="disableSignIn"><a href="signin.html"><span class="glyphicon glyphicon-log-in"></span> Войти</a></li>
+            <li id="displaySignOut" style="display: none;"><a href="" id = "signOut"><span class="glyphicon glyphicon-log-out" ></span> Выйти</a></li>
         </ul>
     </div>
 </nav>
-<li><a href="addperson.html">Добавить нового</a></li>
+
 <div class="container">
     <h3>Информация о ваших долгах</h3>
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
         aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
         Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-        occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </p>
+    <li><a href="addperson.html">Добавить нового человека</a></li>
+    <div id="target"></div>
 </div>
 <div id="noApiMessage" class="configMessage" style="display: none;">
     <div class="backdrop"></div>
@@ -45,11 +50,13 @@
         </div>
     </div>
 </div>
+
 <script src="js/vendor/aws-cognito-sdk.min.js"></script>
 <script src="js/vendor/amazon-cognito-identity.min.js"></script>
 <script src="https://js.arcgis.com/4.3/"></script>
 <script src="js/config.js"></script>
 <script src="js/cognito-auth.js"></script>
 <script src="js/getperson.js"></script>
+<!--<script src="js/change.js"></script>-->
 </body>
 </html>

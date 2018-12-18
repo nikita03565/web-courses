@@ -44,23 +44,42 @@
 </header>
 <div class="container">
     <section class="form-wrap">
-        <h1>Добавить нового человека</h1>
-        <form class="form-horizontal" id="addPersonForm">
+        <h3>Выберите действие для <div id="personname"></div></h3>
+        <form class="form-horizontal" id="actionForm">
             <div class="form-group">
-                <label class="control-label col-sm-2" for="nameInputRegister">Имя:</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="nameInputRegister"  placeholder="Имя" required>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-sm-2" for="familyNameInputRegister">Фамилия:</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="familyNameInputRegister"  placeholder="Фамилия">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <input type="radio" id="Choice1" name="Choice" value="Я занял" checked>
+                    <label for="Choice1">Я занял</label>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                    <input type="submit" class="btn btn-default" value="Добавить">
+                    <input type="radio" id="Choice2" name="Choice" value="У меня заняли">
+                    <label for="Choice2">У меня заняли</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <input type="radio" id="Choice3" name="Choice" value="Я вернул">
+                    <label for="Choice3">Я вернул</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <input type="radio" id="Choice4" name="Choice" value="Мне вернули">
+                    <label for="Choice4">Мне вернули</label>
+                </div>
+            </div>
+            <h2>Изменить сумму</h2>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="amountInput">Сумма:</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="amountInput"  placeholder="Сумма" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <input type="submit" class="btn btn-default" value="Выбрать">
                 </div>
             </div>
         </form>
@@ -85,6 +104,6 @@
 <script src="js/vendor/amazon-cognito-identity.min.js"></script>
 <script src="js/config.js"></script>
 <script src="js/cognito-auth.js"></script>
-<script src="js/addperson.js"></script>
+<script src="js/change.js"></script>
 </body>
 </html>
